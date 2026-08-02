@@ -1,12 +1,23 @@
+import sys
+from src.exception import CustomException
+from src.logger import logging
 from langchain_core.documents import Document
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
-
 def split_documents(documents: list[Document]) -> list[Document]:
-    splitter = RecursiveCharacterTextSplitter(
-        chunk_size=1000,
-        chunk_overlap=300
-    )
-    chunks = splitter.split_documents(documents)
+    try:
+        logging.info("Splitting documents.")
 
-    return chunks
+        splitter = RecursiveCharacterTextSplitter(
+            chunk_size=1000,
+            chunk_overlap=300
+        )
+
+        chunks = splitter.split_documents(documents)
+
+        logging.info("Documents split successfully.")
+        return chunks
+
+    except Exception as e:
+        logging.error(f"Could not split documents!")
+        raise CustomException(e, sys)

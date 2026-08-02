@@ -1,3 +1,8 @@
+#Added
+data/pdf/
+logs
+chroma-data/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
