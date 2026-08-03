@@ -15,7 +15,8 @@ def get_collection() -> chromadb.Collection:
 
         logging.info("Collection created successfully.")
 
-        return client.get_or_create_collection(name = CHROMA_COLLECTION)
+        #client.delete_collection(name=CHROMA_COLLECTION)
+        return client.get_or_create_collection(name=CHROMA_COLLECTION)
     
     except Exception as e:
         logging.error(f"Could not get collection!")

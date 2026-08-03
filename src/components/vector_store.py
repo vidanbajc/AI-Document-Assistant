@@ -20,6 +20,7 @@ class VectorStore:
                 documents=documents,
                 metadatas=metadatas,
             )
+            #print(self.collection.count())
 
             logging.info("Added documents successfully.")
 
