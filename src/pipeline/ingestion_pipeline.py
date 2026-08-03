@@ -21,8 +21,8 @@ def start_pipeline():
 
         metadatas = [
             {
-                "source": chunk.metadata.get("source"),
-                "page": chunk.metadata.get("page")
+                "source": os.path.basename(chunk.metadata.get("source", "Unknown")),
+                "page": chunk.metadata.get("page", 0) + 1
             }
             for chunk in chunks
         ]

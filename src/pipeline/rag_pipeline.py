@@ -6,47 +6,38 @@ from src.components.embeddings import get_embeddings_model
 from src.components.vector_store import VectorStore
 from src.prompts.prompt_template import get_prompt_template
 from dataclasses import dataclass
+from src.services.retriever import Retriever
+from src.services.answer_generator import AnswerGenerator
+from src.utils import get_sources
 
 @dataclass
-class QueryPipeline:
-    llm = get_llm()
-    embeddings_model = get_embeddings_model()
-    vector_store = VectorStore()
-    prompt = get_prompt_template()
-
-
+class RAGPipeline:
     def query(self, question: str):
         try:
             logging.info(f"Processing query: {question}")
 
-            embedding = self.embeddings_model.embed_query(question)
+            retriever = Retriever()
+            documents, metadatas = retriever.retrieve(question)
+            
+            response = AnswerGenerator()
+            for chunk in response.generate(question, documents):
+                yield chunk
 
-            results = self.vector_store.search(
-                embedding=embedding,
-                k=3
-            )
+            sources = get_sources(metadatas)
 
-            documents = results["documents"][0]
-            context = "\n\n".join(documents)
-
-            prompt = self.prompt.format(
-                context=context,
-                question=question
-            )
-
-            for chunk in self.llm.stream(prompt):
-                if chunk.text:
-                    yield chunk.text
+            yield "\n\nSources:\n"
+            for source in sources:
+                yield f"- {source}\n"
 
         except Exception as e:
             logging.error("Could not process query.")
             raise CustomException(e, sys)
 
 
-# pipeline = QueryPipeline()
-# question = input("Ask: ")
+pipeline = RAGPipeline()
+question = input("Ask: ")
 
-# for token in pipeline.query(question):
-#     print(token, end="", flush=True)
+for token in pipeline.query(question):
+    print(token, end="", flush=True)
 
-# print()
+print()
