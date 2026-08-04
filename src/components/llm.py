@@ -12,7 +12,8 @@ def get_llm() -> ChatGoogleGenerativeAI:
         llm = ChatGoogleGenerativeAI(
             model="gemini-flash-latest",
             google_api_key=GOOGLE_API_KEY,
-            temperature=0.1
+            temperature=0.1,
+            max_output_tokens=800
         )
 
         logging.info("Gemini loaded successfully.")

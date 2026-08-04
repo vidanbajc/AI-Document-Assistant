@@ -9,8 +9,8 @@ def split_documents(documents: list[Document]) -> list[Document]:
         logging.info("Splitting documents.")
 
         splitter = RecursiveCharacterTextSplitter(
-            chunk_size=1000,
-            chunk_overlap=300
+            chunk_size=800,
+            chunk_overlap=200
         )
 
         chunks = splitter.split_documents(documents)
