@@ -2,13 +2,11 @@ import sys
 from src.exception import CustomException
 from src.logger import logging
 from db.connection import get_collection
-from src.components.embeddings import get_embeddings_model
 from dataclasses import dataclass
 
 @dataclass
 class VectorStore:
     collection = get_collection()
-    embeddings = get_embeddings_model()
 
     def add_documents(self, ids, embeddings, documents, metadatas):
         try:

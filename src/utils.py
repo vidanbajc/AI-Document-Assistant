@@ -4,7 +4,7 @@ from src.exception import CustomException
 
 def get_sources(metadatas: list) -> list[str]:
     try:
-        logging.error("Finding sources...")
+        logging.info("Finding sources...")
         sources = []
 
         for meta in metadatas:
