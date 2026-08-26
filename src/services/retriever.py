@@ -10,11 +10,11 @@ class Retriever:
     embeddings_model = get_embeddings_model()
     vector_store = VectorStore()
 
-    def retrieve(self, question: str):
+    async def retrieve(self, question: str):
         try:
             logging.info(f"Processing query: {question}")
 
-            embedding = self.embeddings_model.embed_query(question)
+            embedding = await self.embeddings_model.aembed_query(question)
 
             results = self.vector_store.search(
                 embedding=embedding,

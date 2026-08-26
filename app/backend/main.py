@@ -26,5 +26,5 @@ def assistant(request: Request):
 
 @app.post("/assistant")
 @limiter.limit("25/minute")
-def get_answer(request: Request, question: str = Form(...)):
+async def get_answer(request: Request, question: str = Form(...)):
     return StreamingResponse(rag.query(question), media_type="text/plain")

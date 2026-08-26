@@ -10,9 +10,10 @@ def get_llm() -> ChatGoogleGenerativeAI:
         logging.info("Loading Google Gemini...")
 
         llm = ChatGoogleGenerativeAI(
-            model="gemini-flash-latest",
+            model="gemini-3.6-flash", # gemini-flash-latest
             google_api_key=GOOGLE_API_KEY,
-            temperature=0.1,
+            #temperature=0.1, # gemini-3.6-flash is not supporting temperature parameter
+            thinking_level="low",
             max_retries=1
         )
 

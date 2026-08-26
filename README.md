@@ -158,12 +158,12 @@ docker build -t ai-document-assistant .
 
 ### Run the application
 ```bash
-docker run --network ai-docs-network --env-file .env -p 8000:8000 ai-document-assistant
+docker run --name app --network ai-docs-network --env-file .env -p 8000:8000 ai-document-assistant
 ```
 
 ### Stop the application
 ```bash
-docker stop <container_id>
+docker stop app
 
 cd docker/chromadb
 docker compose down

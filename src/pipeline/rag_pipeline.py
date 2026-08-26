@@ -6,18 +6,18 @@ from src.services.retriever import Retriever
 from src.services.answer_generator import AnswerGenerator
 from src.utils import get_sources
 
-retriever = Retriever()
-response = AnswerGenerator()
-
 @dataclass
 class RAGPipeline:
-    def query(self, question: str):
+    retriever = Retriever()
+    response = AnswerGenerator()
+
+    async def query(self, question: str):
         try:
             logging.info(f"Processing query: {question}")
 
-            documents, metadatas = retriever.retrieve(question)
+            documents, metadatas = await self.retriever.retrieve(question)
             
-            for chunk in response.generate(question, documents):
+            async for chunk in self.response.generate(question, documents):
                 yield chunk
 
             sources = get_sources(metadatas)

@@ -10,7 +10,7 @@ class AnswerGenerator:
     llm = get_llm()
     prompt = get_prompt_template()
 
-    def generate(self, question, documents):
+    async def generate(self, question, documents):
         try:
             logging.info(f"Generating response...")
 
@@ -21,7 +21,7 @@ class AnswerGenerator:
                 question=question
             )
 
-            for chunk in self.llm.stream(prompt):
+            async for chunk in self.llm.astream(prompt):
                 if chunk.text:
                     yield chunk.text
 
