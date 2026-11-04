@@ -4,6 +4,5 @@ __pycache__/
 .gitignore
 .env
 chroma-data/
-data/
 .vscode/
 logs/

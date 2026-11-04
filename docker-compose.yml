@@ -1,0 +1,36 @@
+services:
+  chroma:
+    image: chromadb/chroma:latest
+    container_name: chroma
+    ports:
+      - "8001:8000"
+    environment:
+      IS_PERSISTENT: "TRUE"
+      PERSIST_DIRECTORY: /data
+    volumes:
+      - ./chromadb/chroma-data:/data
+    restart: unless-stopped
+
+  setup:
+    image: ai-doc-assistant:latest
+    container_name: ingestion-setup
+    env_file:
+      - .env
+    command: >
+      sh -c "python -m src.pipeline.ingestion_pipeline"
+    depends_on:
+      - chroma
+    profiles:
+      - setup
+
+  backend:
+    build: .
+    image: ai-doc-assistant:latest
+    container_name: app
+    env_file:
+      - .env
+    ports:
+      - "8000:8000"
+    depends_on:
+      - chroma
+    restart: unless-stopped

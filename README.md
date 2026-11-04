@@ -31,21 +31,19 @@ AI-Document-Assistant/
 │
 ├── app/
 │   ├── backend/
-│   │   └── main.py              # FastAPI application
+│   │   └── main.py               # FastAPI application
 │   │
 │   └── frontend/
-│       └── templates/           # HTML frontend (Bootstrap)
+│       └── templates/            # HTML frontend (Bootstrap)
 │           
 ├── data/
-│   └── PDF/                     # Original uploaded PDFs
+│   └── PDF/                      # Original uploaded PDFs
 │
 ├── db/
-│   └── connection.py            # ChromaDB initialization
+│   └── connection.py             # ChromaDB initialization
 │
-├── docker/
-│   ├── chromadb/
-│   │   └── docker-compose.yml   # Starts the ChromaDB container
-│   └── Dockerfile               # Docker image for the FastAPI application
+├── chromadb/
+│   └── chroma-data/              # Persistent vector database storage
 │
 ├── logs/                         # Logging files
 │
@@ -75,7 +73,10 @@ AI-Document-Assistant/
 ├── config.py                     # Environment variables (.env)
 ├── requirements.txt
 ├── .gitignore
-└── README.md
+├── README.md
+├── .dockerignore
+├── docker-compose.yml            # Starts the ChromaDB container
+└── Dockerfile                    # Docker image for the FastAPI application
 ```
 
 ---
@@ -138,34 +139,18 @@ CHROMA_PORT=8000
 CHROMA_COLLECTION=your_collection_name
 ```
 
-### Navigate to the ChromaDB Docker folder and start:
+### Build and start the application:
 ```bash
-cd docker/chromadb
-docker compose up -d
+docker compose up -d --build
 ```
 
-### Create Docker network and Connect the ChromaDB container:
+### Load documents data into the database
 ```bash
-docker network create ai-docs-network
-docker network connect ai-docs-network chroma
-```
-
-### Return to the project root and build the application image:
-```bash
-cd ../..
-docker build -t ai-document-assistant .
-```
-
-### Run the application
-```bash
-docker run --name app --network ai-docs-network --env-file .env -p 8000:8000 ai-document-assistant
+docker compose --profile setup run --build --rm setup
 ```
 
 ### Stop the application
 ```bash
-docker stop app
-
-cd docker/chromadb
 docker compose down
 ```
 

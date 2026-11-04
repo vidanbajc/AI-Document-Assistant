@@ -27,6 +27,8 @@ def start_pipeline():
             for chunk in chunks
         ]
 
+        vector_store.delete_all()
+
         embeddings = vector_store.embeddings.embed_documents(texts)
 
         vector_store.add_documents(
